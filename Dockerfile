@@ -1,9 +1,9 @@
-FROM node:0.12
+FROM node
 
 MAINTAINER Knut Ahlers <knut@ahlers.me>
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV EP_VERSION 1.5.7
+ENV EP_VERSION develop
 
 # Prepare etherpad
 RUN mkdir /src
