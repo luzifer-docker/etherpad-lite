@@ -4,7 +4,6 @@ MAINTAINER Knut Ahlers <knut@ahlers.me>
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV EP_VERSION 1.5.7
-#ENV EP_MODULES ep_headings ep_monospace_default ep_print ep_adminpads
 
 # Prepare etherpad
 RUN mkdir /src
@@ -26,9 +25,6 @@ WORKDIR /src/etherpad
 
 # Install dependencies & modules
 RUN bin/installDeps.sh
-
-ONBUILD WORKDIR /src/etherpad/src
-ONBUILD RUN npm install ${EP_MODULES}
 
 VOLUME /data
 

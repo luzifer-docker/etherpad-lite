@@ -21,7 +21,8 @@ docker run -p 9001:9001 -v /data/etherpad-lite:/data quay.io/luzifer/etherpad-li
 ```Dockerfile
 FROM quay.io/luzifer/etherpad-lite
 
-ENV EP_MODULES ep_author_hover ep_adminpads
+WORKDIR /src/etherpad/src
+RUN npm install ep_author_hover ep_adminpads
 ```
 
 - Build your container: `docker build -t my_etherpad-lite .`
