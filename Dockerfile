@@ -26,6 +26,8 @@ WORKDIR /src/etherpad
 
 # Install dependencies & modules
 RUN bin/installDeps.sh
+
+ONBUILD WORKDIR /src/etherpad/src
 ONBUILD RUN npm install ${EP_MODULES}
 
 VOLUME /data
