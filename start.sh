@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euxo pipefail
 
 if [ -e /data/APIKEY.txt ]; then
   rm -f /src/etherpad/APIKEY.txt

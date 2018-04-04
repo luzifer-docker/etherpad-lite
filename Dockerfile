@@ -1,30 +1,33 @@
-FROM node:0.12
+FROM node:9-stretch
 
-MAINTAINER Knut Ahlers <knut@ahlers.me>
+LABEL maintainer Knut Ahlers <knut@ahlers.me>
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV EP_VERSION 1.5.7
-
-# Prepare etherpad
-RUN mkdir /src
-WORKDIR /src
-
-ADD https://github.com/ether/etherpad-lite/archive/${EP_VERSION}.zip /src/etherpad.zip
-ADD start.sh /start.sh
+ENV EP_VERSION 1.6.3
 
 # Dependencies based on docs
-RUN apt-get update \
- && apt-get -y install gzip git-core curl python libssl-dev pkg-config build-essential unzip
+RUN set -ex \
+ && apt-get update \
+ && apt-get --no-install-recommends -y install \
+    build-essential \
+    curl \
+    git-core \
+    gzip \
+    libssl-dev \
+    pkg-config \
+    python \
+    unzip \
+ && mkdir /src \
+ && curl -sSfLo /tmp/etherpad.zip https://github.com/ether/etherpad-lite/archive/${EP_VERSION}.zip \
+ && unzip /tmp/etherpad.zip -d /src \
+ && mv /src/etherpad-lite-* /src/etherpad \
+ && sed -i '/installDeps.sh/d' /src/etherpad/bin/run.sh \
+ && cd /src/etherpad && bin/installDeps.sh \
+ && rm -rf /var/lib/apt/lists/* /tmp/etherpad.zip
 
-RUN unzip etherpad \
- && rm -f etherpad.zip \
- && mv etherpad-lite-* etherpad \
- && sed '/installDeps.sh/d' etherpad/bin/run.sh -i
+COPY start.sh /start.sh
 
 WORKDIR /src/etherpad
-
-# Install dependencies & modules
-RUN bin/installDeps.sh
 
 VOLUME /data
 
